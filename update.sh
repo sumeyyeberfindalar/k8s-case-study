@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+NEW_IMAGE=${1:-"sissbruecker/linkding:1.45.0"}
+
 echo "=== Bölüm D: Rolling Update ve Rollback Testi ==="
 
 echo ">>> Mevcut image versiyonu:"
@@ -13,7 +15,7 @@ FORMAT="POD:.metadata.name,STATUS:.status.phase,IMAGE:.spec.containers[0].image"
 # ---------------------------------------------------------
 # ADIM 1: Rolling Update
 # ---------------------------------------------------------
-echo ">>> ADIM 1: Yeni versiyona (1.45.0) güncelleniyor (Rolling Update)..."
+echo ">>> ADIM 1: Yeni versiyona (${NEW_IMAGE}) güncelleniyor (Rolling Update)..."
 echo "---------------------------------------------------------------------------"
 
 # Watch komutunu özel sütunlarla arka planda başlat
@@ -22,7 +24,7 @@ WATCH_PID=$!
 sleep 2 
 
 # Güncellemeyi tetikle
-kubectl set image deployment/linkding linkding=sissbruecker/linkding:1.45.0 > /dev/null
+kubectl set image deployment/linkding linkding=$NEW_IMAGE > /dev/null
 
 # Güncellemenin bitmesini bekle
 kubectl rollout status deployment/linkding >/dev/null 2>&1

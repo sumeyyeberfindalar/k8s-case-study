@@ -17,21 +17,25 @@ jobs:
       - name: Docker Image Build
         run: |
           echo "Özel Linkding imajı build ediliyor..."
-          docker build -t custom-linkding:latest .
+          docker build -t custom-linkding:${{ github.sha }} .
 
       - name: Kind (Kubernetes) Kurulumu
-        uses: helm/kind-action@v1.9.0
+        uses: helm/kind-action@v1.10.0
         with:
-          version: v0.20.0
+          version: v0.31.0
           config: kind-config.yaml
           cluster_name: k8s-case
+
+      - name: İmajı Kind Cluster'ına Yükle
+        run: |
+          kind load docker-image custom-linkding:${{ github.sha }} --name k8s-case
 
       - name: Setup.sh ile Uygulamayı Ayağa Kaldırma
         run: |
           chmod +x setup.sh
           ./setup.sh
 
-      - name: Update.sh ile Day-2 Operasyonları (Rolling Update & Rollback)
+      - name: Update.sh ile Rolling Update & Rollback Operasyonları
         run: |
           chmod +x update.sh
-          ./update.sh
+          ./update.sh custom-linkding:${{ github.sha }}
