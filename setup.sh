@@ -35,6 +35,12 @@ kubectl wait --namespace ingress-nginx \
 echo "Ingress Controller hazır!"
 echo ""
 
+echo "Webhook'ların devreye girmesi için 15 saniye bekleniyor..."
+sleep 15
+
+echo "Ingress Controller tamamen hazır!"
+echo ""
+
 # 3. Uygulama Kurulumu
 echo ">>> ADIM 3: Uygulama (Linkding) Kurulumu"
 echo "Uygulama manifestleri apply ediliyor..."

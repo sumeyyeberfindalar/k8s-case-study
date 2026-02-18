@@ -29,12 +29,20 @@ chmod +x setup.sh
 
 *Script tamamlandığında uygulamaya `http://linkding.local` adresinden (Kullanıcı adı: admin, Şifre: password123) erişebilirsiniz.*
 
-Deployment sonrası imaj güncelleme (Rolling Update) ve hata durumunda geri alma (Rollback) süreçlerini canlı olarak simüle etmek için aşağıdaki scripti çalıştırabilirsiniz:
+Deployment sonrası imaj güncelleme (Rolling Update) ve hata durumunda geri alma (Rollback) süreçlerini canlı olarak simüle etmek için aşağıdaki scripti çalıştırabilirsiniz. 
 
+Script varsayılan olarak `1.45.0` imajına günceller, ancak isterseniz dışarıdan dinamik bir imaj (örneğin CI/CD pipeline'ından gelen imajı) parametre olarak verebilirsiniz:
+
+**Varsayılan İmaj ile Çalıştırmak İçin:**
 ```bash
 chmod +x update.sh
 ./update.sh
-
 ```
 
+**Farklı/Dinamik Bir İmaj ile Çalıştırmak İçin:**
+
+```bash
+./update.sh sissbruecker/linkding:latest
+
+```
 *Bu script, Kubernetes custom-columns kullanarak pod geçişlerini (Zero-Downtime) terminal üzerinde canlı (watch) olarak listeler.*
