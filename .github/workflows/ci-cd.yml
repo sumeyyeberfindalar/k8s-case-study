@@ -1,0 +1,37 @@
+name: Kubernetes E2E Otomasyon
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Kodu Çek (Checkout)
+        uses: actions/checkout@v4
+
+      - name: Docker Image Build
+        run: |
+          echo "Özel Linkding imajı build ediliyor..."
+          docker build -t custom-linkding:latest .
+
+      - name: Kind (Kubernetes) Kurulumu
+        uses: helm/kind-action@v1.9.0
+        with:
+          version: v0.20.0
+          config: kind-config.yaml
+          cluster_name: k8s-case
+
+      - name: Setup.sh ile Uygulamayı Ayağa Kaldırma
+        run: |
+          chmod +x setup.sh
+          ./setup.sh
+
+      - name: Update.sh ile Day-2 Operasyonları (Rolling Update & Rollback)
+        run: |
+          chmod +x update.sh
+          ./update.sh
