@@ -29,7 +29,7 @@ kubectl set image deployment/linkding linkding=$NEW_IMAGE > /dev/null
 # Güncellemenin bitmesini bekle
 kubectl rollout status deployment/linkding >/dev/null 2>&1
 
-sleep 10
+sleep 45
 
 # İzlemeyi durdur
 kill $WATCH_PID 2>/dev/null || true
@@ -60,7 +60,7 @@ kubectl rollout undo deployment/linkding > /dev/null
 # Geri almanın bitmesini bekle
 kubectl rollout status deployment/linkding> /dev/null 2>&1
 
-sleep 10
+sleep 45
 
 # İzlemeyi durdur
 kill $WATCH_PID 2>/dev/null || true
